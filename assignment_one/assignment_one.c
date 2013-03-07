@@ -1,6 +1,7 @@
 #include <pololu/orangutan.h>
-#define true 1
-#define false 0
+#define TRUE 1
+#define FALSE 0
+#define ENCODER_COUNT_PER_REVOLUTION 333.33
 
 void print_count(float count)
 {
@@ -22,7 +23,7 @@ int main()
   // Initialize the encoders
   encoders_init(IO_D2, IO_D3, IO_A3, IO_A2);
   float count = 0;
-  char forward = true;
+  char forward = TRUE;
   int motor_speed = 100;
 
   //set_motors(100, 255);
@@ -32,7 +33,7 @@ int main()
     lcd_goto_xy(0,0);
 
     //Calculate the count
-    count = encoders_get_counts_m1() / 333.33;
+    count = encoders_get_counts_m1() / ENCODER_COUNT_PER_REVOLUTION;
 
     // Increment and decrement speed if top or bottom buttons were pressed.
     unsigned char button = get_single_debounced_button_press(ANY_BUTTON);
@@ -64,10 +65,10 @@ int main()
 
       // At 0 and 2 we need to switch directions.
       if(count >= 2 && forward)
-        forward = false;
+        forward = FALSE;
 
       if(count <= 0 && !forward)
-        forward = true;
+        forward = TRUE;
     }
 
     // Print the motor speed and revolutions
